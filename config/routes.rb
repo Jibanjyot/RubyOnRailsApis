@@ -11,4 +11,11 @@ Rails.application.routes.draw do
   get '/articles/sort', to: 'articles#sort'
   get '/articles/search', to: 'articles#search'
   post '/articles/upload', to: 'articles#upload'
+
+  # add author
+  post '/api/author/add', to: 'authors#create'
+  post '/api/author/signIn', to: 'authors#sign_in'
+
+  # send emails
+  post '/emails/custom', to: 'authors#send_custom_email'
 end

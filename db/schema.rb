@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_02_051355) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_02_134512) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,13 +39,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_051355) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "articles", force: :cascade do |t|
-    t.string "title"
-    t.text "content"
-    t.datetime "published_at"
-    t.integer "author_id"
+# Could not dump table "articles" because of following StandardError
+#   Unknown type 'attachment' for column 'image'
+
+  create_table "articles_categories", id: false, force: :cascade do |t|
+    t.integer "article_id", null: false
+    t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_articles_categories_on_article_id"
+    t.index ["category_id"], name: "index_articles_categories_on_category_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -53,8 +56,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_051355) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_digest"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "articles", "authors"
+  add_foreign_key "articles_categories", "articles"
+  add_foreign_key "articles_categories", "categories"
 end
