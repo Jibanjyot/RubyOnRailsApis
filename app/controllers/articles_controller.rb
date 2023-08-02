@@ -96,5 +96,22 @@ class ArticlesController < ApplicationController
     
         render json: @articles
     end
+
+    def upload
+        if params[:file].present?
+        
+          file = params[:file]
+          file_blob = ActiveStorage::Blob.create_and_upload!(
+            io: file,
+            filename: file.original_filename,
+            content_type: file.content_type,
+            service_name: :custom_files
+          )
+    
+          render json: { message: "File uploaded successfully", file_url: url_for(file_blob) }, status: :created
+        else
+          render json: { error: "No file attached" }, status: :unprocessable_entity
+        end
+      end
 end
 

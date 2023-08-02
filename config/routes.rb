@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   get '/articles/filter_by_dates', to: 'articles#filter_by_dates'
   get '/articles/sort', to: 'articles#sort'
   get '/articles/search', to: 'articles#search'
+  post '/articles/upload', to: 'articles#upload'
 end
