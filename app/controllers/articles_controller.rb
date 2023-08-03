@@ -5,8 +5,18 @@ class ArticlesController < ApplicationController
     end
 
     def create
-        article_params = JSON.parse(request.body.read)
-        render json: Article.create(article_params)
+        @article = Article.new(title: params[:title],content:params[:content],author_id:params[:authorId])
+        if params[:image].present?
+          @article.image.attach(params[:image])
+          image_url = url_for(@article.image) if @article.image.attached?
+          puts image_url
+        end
+         
+        if @article.save
+          render json: {message:"Created",image_url: url_for(@article.image)}, status: :created
+        else
+          render json: { errors: @article.errors.full_messages }, status: :unprocessable_entity
+        end
     end
 
     def edit_article

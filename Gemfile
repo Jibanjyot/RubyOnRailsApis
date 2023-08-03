@@ -74,3 +74,4 @@ end
 
 gem 'bcrypt'
 gem 'jwt'
+gem 'razorpay', '~> 2.0'
